@@ -314,10 +314,11 @@ class ZabbixAPI:
             raise ZabbixAPIError('Error: cannot update host id: %s' % hostid)
 
     def __compare_ip(self, hostdump, ip):
-        for interface in hostdump['interfaces']:
-            if interface['main'] == '1':
-                if interface['ip'] != ip:
-                    self.__update_interface_ip(interface['interfaceid'], ip)
+       for interface in hostdump['interfaces']:
+            if hostdump['interfaces'][interface]['main'] == '1':
+                if hostdump['interfaces'][interface]['ip'] != ip:
+
+                    self.__update_interface_ip(hostdump['interfaces'][interface]['interfaceid'], ip)
                     self.__changed.append('set ip: %s' % ip)
 
     def __compare_hostgroups(self, hostdump, hostgroups):
